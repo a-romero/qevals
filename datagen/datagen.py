@@ -123,3 +123,33 @@ def ground_truth_gen(qac_triples):
 
 def get_metadata(file_path):
     return {"file_path": file_path}
+
+def create_synthetic_data(data_corpus_dir, gen_provider) -> Dataset:
+    ROOT_DATA_DIR = './datagen/data/'
+    path = ROOT_DATA_DIR + data_corpus_dir
+    print(path)
+    path_list = files.process_paths(path)
+
+    print(f"Converting data in {path_list} to text...")
+    doc_list = convert_to_text(path_list)
+    print("Preprocessing docs...")
+    print(f"Sample: {doc_list[0]}")
+    docs = preprocess(doc_list)
+
+    for doc in docs:
+        print(doc.metadata)
+
+    print("All data has been loaded")
+
+    bare_prompt_template = "{content}"
+    bare_template = ChatPromptTemplate.from_template(template=bare_prompt_template)
+
+    qac_triples_q = question_gen(docs, bare_template, gen_provider)
+    print(f"Produced: {len(docs)} questions")
+
+    qac_triples_qa = answer_gen(qac_triples_q, bare_template, gen_provider)
+
+    ground_truth_qac_set = ground_truth_gen(qac_triples_qa)
+    eval_dataset = Dataset.from_pandas(ground_truth_qac_set)
+
+    return eval_dataset
