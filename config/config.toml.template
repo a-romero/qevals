@@ -1,0 +1,18 @@
+[MISC]
+SSL_CERT_FILE = ""
+USER = ""
+
+[DATAGEN]
+DATA_DIR = ""
+GEN_PROVIDER = ""
+VERTEX_ENDPOINT = ""
+VERTEX_PROJECT = ""
+VERTEX_MODEL = ""
+
+[DATAEVAL]
+EVAL_TESTS = ["AnswerRelevancy","Hallucination","Faithfulness","Bias","Toxicity","Correctness","Coherence","PromptInjection","PromptJailbreaking","PromptLeakage"]
+EVAL_PROVIDER = ""
+AZURE_OPENAI_ENDPOINT = ""
+OPENAI_API_TYPE = ""
+AZURE_DEPLOYMENT = ""
+AZURE_MODEL = ""
