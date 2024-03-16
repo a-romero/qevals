@@ -4,7 +4,7 @@ import pandas as pd
 from functools import partial
 import config
 from datasets import Dataset
-from client.r2d2_client import R2D2Client
+from client.llm_client import LLMClient
 from datagen.utils import read_files
 from datagen.prompt import find_prompt
 from datagen.dataprep import convert_to_text, preprocess
@@ -23,7 +23,7 @@ def question_gen(docs, bare_template, gen_provider):
     question_output_parser = StructuredOutputParser.from_response_schemas(question_response_schemas)
     format_instructions = question_output_parser.get_format_instructions()
 
-    question_generation_llm = R2D2Client().get_gen_client(gen_provider=gen_provider)
+    question_generation_llm = LLMClient().get_gen_client(gen_provider=gen_provider)
 
     qa_template = find_prompt("system", "professor_q")
 
@@ -66,7 +66,7 @@ def answer_gen(qac_triples, bare_template, gen_provider):
     print("Generating answers")
     print(f"Using {gen_provider}")
 
-    answer_generation_llm = R2D2Client().get_gen_client(gen_provider=gen_provider)
+    answer_generation_llm = LLMClient().get_gen_client(gen_provider=gen_provider)
 
     answer_schema = ResponseSchema(
         name="answer",
